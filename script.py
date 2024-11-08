@@ -90,19 +90,24 @@ def create_map_from_coordinates(coordinates, shape):
 
     return map_matrix
 
-
+#Bot's movement
+#Check if the bot can move up
 def checkUp():
     if bot[0] - 1 >= 0 and gameMap[bot[0] - 1][bot[1]] != -1:
         return True
     return False
+#Check if the bot can move left
 def checkLeft():
     if bot[1] - 1 >= 0 and gameMap[bot[0]][bot[1] - 1] != -1:
         return True
     return False
+#Check if the bot can move right
 def checkRight():
     if bot[1] + 1 < 7 and gameMap[bot[0]][bot[1] + 1] != -1:
         return True
     return False
+
+#Frees the bot from a cone stuck position of 1 depth
 def checkDown2Left():
     if bot[0] + 1 < 10 and bot[1] - 1 >= 0 and gameMap[bot[0] + 1][bot[1] - 1] != -1:
         return True
@@ -112,23 +117,23 @@ def checkDown2Right():
         return True
     return False
 
-
+#Draws and updates map for debugging purposes
 def updateMap(gameMap, bot, new_position):
-    # Set the current bot position to 0 (empty space)
+    # Set the current bot position to 0 (aka Empty)
     current_x, current_y = bot
     gameMap[current_x][current_y] = 0
 
     # Update the bot's position
     new_x, new_y = new_position
-    gameMap[new_x][new_y] = 1  # Set the new position to 1 (bot's position)
+    gameMap[new_x][new_y] = 1  # Set the new position of the bot to 1 (aka Occupied)
 
     # Update the bot's internal position variable
     bot[0] = new_x
-    bot[1] = new_y  # Update bot's coordinates
+    bot[1] = new_y
 
-    # Print updated map for visual checking
     print(gameMap)
 
+#Main movement function
 def start():
     if checkUp():
         print("Moved Up")
