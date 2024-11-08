@@ -3,7 +3,6 @@ import json
 import numpy as np
 from collections import deque
 
-# Establish a standard Socket.IO client
 sio = socketio.Client()
 
 @sio.event
@@ -11,24 +10,22 @@ def connect():
     print("Connected to the server.")
     sio.emit('PingTest', 'Hello from the Python client!')
 
-#"Obstaculos":[{"x":0, "y":0, "tipo":1},{"x":0, "y":10, "tipo":1}]}'
+#"Obstacles":[{"x":0, "y":0, "tipo":1},{"x":0, "y":10, "tipo":1}]}'
 @sio.on('status')
 def response(data):
     coordinates = tuple(data.items())
     print("Response from the server:", data)
 
 # Connect to the Socket.IO server
+#Change IP to connect while we dont have a domain
 sio.connect("http://10.72.59.25:3000")
 
-# Keep the client running
+
 try:
     sio.wait()
 except KeyboardInterrupt:
     print("Disconnecting...")
     sio.disconnect()
-
-
-
 
 
 
@@ -43,19 +40,24 @@ def create_map_from_coordinates(coordinates, shape):
 
     return map_matrix
 
-
+#Bot's movement
+#Check if the bot can move up
 def checkUp():
     if bot[0] - 1 >= 0 and gameMap[bot[0] - 1][bot[1]] != -1:
         return True
     return False
+#Check if the bot can move left
 def checkLeft():
     if bot[1] - 1 >= 0 and gameMap[bot[0]][bot[1] - 1] != -1:
         return True
     return False
+#Check if the bot can move right
 def checkRight():
     if bot[1] + 1 < 7 and gameMap[bot[0]][bot[1] + 1] != -1:
         return True
     return False
+
+#Frees the bot from a cone stuck position of 1 depth
 def checkDown2Left():
     if bot[0] + 1 < 10 and bot[1] - 1 >= 0 and gameMap[bot[0] + 1][bot[1] - 1] != -1:
         return True
@@ -65,23 +67,23 @@ def checkDown2Right():
         return True
     return False
 
-
+#Draws and updates map for debugging purposes
 def updateMap(gameMap, bot, new_position):
-    # Set the current bot position to 0 (empty space)
+    # Set the current bot position to 0 (aka Empty)
     current_x, current_y = bot
     gameMap[current_x][current_y] = 0
 
     # Update the bot's position
     new_x, new_y = new_position
-    gameMap[new_x][new_y] = 1  # Set the new position to 1 (bot's position)
+    gameMap[new_x][new_y] = 1  # Set the new position of the bot to 1 (aka Occupied)
 
     # Update the bot's internal position variable
     bot[0] = new_x
-    bot[1] = new_y  # Update bot's coordinates
+    bot[1] = new_y
 
-    # Print updated map for visual checking
     print(gameMap)
 
+#Main movement function
 def start():
     if checkUp():
         print("Moved Up")
@@ -111,8 +113,8 @@ def start():
         moves.append("down-2-right")
         return
 
-
-# Define the shape of the matrix (e.g., 10x7 matrix)
+# MEGA IMPORTANT  defines the shape of the map (needs to be fine tuned to the more complicated pathfinder AI's)
+# Define the shape of the matrix (e.g., 10 rows(y) x7 columns(x) matrix)
 shape = (10, 7)
 
 # Create the map
@@ -135,19 +137,10 @@ while bot[0] != 0:
     counter += 1
 print(moves)
 
-"""
-# Example coordinates and values (x, y) -> value
-coordinates = [
-    ((1, 3), -1),  # At position (1, 3) place -1
-    ((1, 4), -1),  # At position (1, 4) place -1
-    ((2, 0), -1),
-    ((3, 1), -1),  # At position (3, 1) place -1
-    ((5, 2), -1),
-    ((5, 5), -1),  # At position (5, 5) place -1
-    ((7, 3), -1),  # At position (7, 3) place -1
-    ((9, 3), 1),   # At position (9, 3) place 1
-]
 
+
+
+"""
 gameMap = np.array([
     [0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, -1, -1, 0, 0],
