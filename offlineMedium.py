@@ -109,11 +109,7 @@ gameMap = create_map_from_coordinates(coordinates1, shape)
 start_pos = (99, 20)
 
 # Define function for cost-based color
-def cost_to_color(cost):
-    """Map cost to a shade of blue. Lower cost = lighter blue, higher cost = darker blue."""
-    base_color = 255  # Base blue intensity
-    intensity = max(0, min(255, base_color - (cost * 20)))  # Adjust shade based on cost
-    return (intensity, intensity, base_color)  # Shades of blue
+
 
 def draw_grid(path=None, visited=None):
     SCREEN.fill(DARK_GREY)  # Background color for the grid
@@ -127,8 +123,6 @@ def draw_grid(path=None, visited=None):
                 color = BLUE  # Visited cells
             elif path and (x, y) in path:
                 color = GREEN  # Final path chosen
-            elif gameMap[x, y] > 0:  # If the cell has a cost
-                color = cost_to_color(gameMap[x, y])  # Map cost to color
 
             # Draw the cell with slight padding for visible grid lines
             pygame.draw.rect(SCREEN, color, (y * CELL_SIZE, x * CELL_SIZE, CELL_SIZE - 2, CELL_SIZE - 2))
@@ -137,12 +131,21 @@ def draw_grid(path=None, visited=None):
 def draw_path(path):
     for (px, py) in path:
         draw_grid(path=path)
-        pygame.time.delay(1)
+        pygame.time.delay(0)
         pygame.display.flip()
+
+# Define normalized moves for final path visualization
+normmoves = {
+    "up": (-1, 0),
+    "down": (1, 0),
+    "left": (0, -1),
+    "right": (0, 1)
+}
+
 # Run BFS with real-time visualization of the search spread
 bfs_path = []
 visited = set()
-queue = deque([(start_pos, [])])  # (position, path)
+queue = deque([(start_pos, [start_pos])])  # Start with (position, path of coordinates)
 visited.add(start_pos)
 
 while queue:
@@ -153,9 +156,10 @@ while queue:
 
     # Update the display
     pygame.display.flip()
+
     # Check if reached the top row
     if x == 0:
-        bfs_path = path  # store final path
+        bfs_path = path  # store final path of coordinates
         break
 
     # Explore neighbors
@@ -163,17 +167,14 @@ while queue:
         nx, ny = x + dx, y + dy
         if 0 <= nx < ROWS and 0 <= ny < COLS and gameMap[nx, ny] == 0 and (nx, ny) not in visited:
             visited.add((nx, ny))
-            queue.append(((nx, ny), path + [(nx, ny)]))  # Store the coordinate in the path
+            queue.append(((nx, ny), path + [(nx, ny)]))  # Append the coordinate to path
 
 # After BFS completes, visualize the final path in green
-for (px, py) in bfs_path:
-    draw_grid(path=bfs_path, visited=visited)
-    pygame.time.delay(1)  # Adjust delay for visual clarity of final path
-    pygame.display.flip()
 
 print("Path to top row:", bfs_path)
 print("--- %s seconds ---" % (time.time() - start_time))
 draw_path(bfs_path)
+
 # Keep window open until user closes it
 running = True
 while running:

@@ -1,56 +1,31 @@
+# Import necessary libraries
 import numpy as np
 from collections import deque
 import time
-#Start timer
+
 start_time = time.time()
+#changes the Map Size
+ROWS = 100
+COLS = 70
 
+# Define moves and directions
+moves = {
+    "up": (-1, 0),
+    "down": (1, 0),
+    "left": (0, -1),
+    "right": (0, 1)
+}
 
-def create_map_from_coordinates(coordinates, shape):
-    # Initialize the matrix with zeros
+# Function to create map from coordinates
+def create_map_from_coordinates(coordinates, rows, cols):
+    shape = (rows, cols)
     map_matrix = np.zeros(shape, dtype=int)
-
-    # Fill the matrix based on the coordinates and their values
     for coord, value in coordinates:
         x, y = coord
         map_matrix[x, y] = value
-
     return map_matrix
 
-
-# Variables to receive start_pos and coordinates1
-"""
-# Define the game map
-coordinates1 = [
-    ((1, 3), -1),
-    ((1, 4), -1),
-    ((2, 0), -1),
-    ((3, 1), -1),
-    ((5, 2), -1),
-    ((5, 5), -1),
-    ((7, 3), -1),
-    ((9, 3), 1),
-]
-
-coordinates1 = [
-    ((1, 3), -1),
-    ((2, 5), -1),
-    ((3, 7), -1),
-    ((4, 2), -1),
-    ((5, 10), -1),
-    ((6, 4), -1),
-    ((7, 8), -1),
-    ((8, 1), -1),
-    ((9, 5), -1),
-    ((10, 11), -1),
-    ((11, 6), -1),
-    ((12, 3), -1),
-    ((13, 9), -1),
-    ((14, 12), -1),
-    ((15, 2), -1),
-    ((16, 7), -1),
-    ((18, 4), 1)   # Bot position
-]
-"""
+# Set up the game map, start position, and obstacles
 coordinates1 = [
     ((5, 10), -1), ((12, 45), -1), ((20, 30), -1), ((25, 60), -1),
     ((33, 15), -1), ((40, 65), -1), ((45, 25), -1), ((52, 50), -1),
@@ -110,50 +85,30 @@ coordinates1 = [
     ((85, 52), -1), ((88, 38), -1), ((91, 12), -1), ((96, 18), -1),
 ]
 
+start_pos = (ROWS - 1, COLS // 2)
 
-#IMPORTANT  Game Information
-# Creates the game map
-shape = (100, 70)
-gameMap = create_map_from_coordinates(coordinates1, shape)
-start_pos = (99, 35)
+gameMap = create_map_from_coordinates(coordinates1, ROWS, COLS)
 
-#Prints Starting Map
-print(gameMap)
-
-
-# Define the directions and their corresponding moves
-moves = {
-    "up": (-1, 0),
-    "down": (1, 0),
-    "left": (0, -1),
-    "right": (0, 1)
-}
-
-# Find the bot's starting position (position with '1')
-#Will be replaced when connected to the magic wonder world that is WebSockets
-
-
-
-    # BFS Algorithm (displayed only once, in the event of no button press)
 bfs_path = []
-queue = deque([(start_pos, [])])  # (position, path)
 visited = set()
+queuedPositions = deque([(start_pos, [])])  # (position, path)
 visited.add(start_pos)
 
-while queue:
-    (x, y), path = queue.popleft()
+while queuedPositions:
+    (x, y), path = queuedPositions.popleft()
     # Check if reached the top row
     if x == 0:
         bfs_path = path  # store final path
         break
+
     # Explore neighbors
     for move_name, (dx, dy) in moves.items():
         nx, ny = x + dx, y + dy
-        if 0 <= nx < shape[0] and 0 <= ny < shape[1] and gameMap[nx, ny] == 0 and (nx, ny) not in visited:
+        if 0 <= nx < ROWS and 0 <= ny < COLS and gameMap[nx, ny] == 0 and (nx, ny) not in visited:
             visited.add((nx, ny))
-            queue.append(((nx, ny), path + [move_name]))
+            queuedPositions.append(((nx, ny), path + [move_name]))  # Store the coordinate in the path
 
-# Output final path
+
 print("Path to top row:", bfs_path)
 print("--- %s seconds ---" % (time.time() - start_time))
 
