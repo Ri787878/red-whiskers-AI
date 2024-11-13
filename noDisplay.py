@@ -1,8 +1,9 @@
 # Import necessary libraries
-import numpy as np
 from collections import deque
+import coordinateTests
+import numpy as np
+import time
 import json
-
 
 # Define moves and directions
 moves = {
@@ -126,3 +127,46 @@ def mediumBot(ROWS, COLS, start_pos,coordinates):
     return path_json
 
 
+
+
+def easyBot(ROWS, COLS, start_pos, coordinates):
+	print("Easy Bot")
+	#start_time = time.time()
+	start_time = time.time()
+	json_path = easyBot(ROWS, COLS, start_pos, coordinates)
+	print("json_path = ", json_path)
+	print("Time taken: ", time.time() - start_time)
+
+def mediumBot(ROWS, COLS, start_pos, coordinates):
+	print("Medium Bot")
+	start_time = time.time()
+	json_path = mediumBot(ROWS, COLS, tuple(start_pos), coordinateTests.coordinatesTest_1)
+	print("json_path = ", json_path)
+	print("Time taken: ", time.time() - start_time)
+
+def chooseCoordinates():
+	print("Choose what Test Case you want to use")
+	print("1. coordinatesTest_1")
+	print("2. coordinatesTest_2")
+	print("3. coordinatesTest_3")
+	print("4. coordinatesTest_4")
+	coordinates = input("Enter your choice: ")
+
+	if coordinates == '1':
+		return coordinateTests.coordinatesTest_1
+	elif coordinates == '2':
+		return coordinateTests.coordinatesTest_2
+	elif coordinates == '3':
+		return coordinateTests.coordinatesTest_3
+	elif coordinates == '4':
+		return coordinateTests.coordinatesTest_4
+	else:
+		return None
+
+def chooseBot():
+	print("What is the Bot you want to test?")
+	print("1. Easy Bot")
+	print("2. Medium Bot")
+	print("3. Hard Bot (UNDER CONSTRUCTION)")
+	print("4. Exit")
+	return input("Enter your choice: ")
