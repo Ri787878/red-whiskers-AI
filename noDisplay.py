@@ -1,6 +1,6 @@
 # Import necessary libraries
 from collections import deque
-import coordinateTests
+import testCases
 import numpy as np
 import time
 import json
@@ -22,8 +22,6 @@ def create_map_from_coordinates(coordinates, rows, cols):
         map_matrix[x, y] = value
     return map_matrix
 
-###CODE FOR EASY BOT
-
 #Updates map
 def updateMap(gameMap, botPosition, new_position):
     # Set the current bot position to 0 (aka Empty)
@@ -39,7 +37,7 @@ def updateMap(gameMap, botPosition, new_position):
     botPosition[1] = new_y
     return
 
-#Bot's movement
+##Bot's movement
 #Check if the bot can move up
 def checkUp(botPosition, gameMap):
     if botPosition[0] - 1 >= 0 and gameMap[botPosition[0] - 1][botPosition[1]] != -1:
@@ -129,20 +127,20 @@ def mediumBot(ROWS, COLS, start_pos,coordinates):
 
 
 
-def easyBot(ROWS, COLS, start_pos, coordinates):
+def startEasyBot(ROWS, COLS, start_pos, coordinates):
 	print("Easy Bot")
-	#start_time = time.time()
-	start_time = time.time()
+	#startTime = time.time()
+	startTime = time.time()
 	json_path = easyBot(ROWS, COLS, start_pos, coordinates)
-	print("json_path = ", json_path)
-	print("Time taken: ", time.time() - start_time)
+	print("jsonPath = ", jsonPath)
+	print("Time taken: ", time.time() - startTime)
 
-def mediumBot(ROWS, COLS, start_pos, coordinates):
+def startMediumBot(ROWS, COLS, start_pos, coordinates):
 	print("Medium Bot")
-	start_time = time.time()
-	json_path = mediumBot(ROWS, COLS, tuple(start_pos), coordinateTests.coordinatesTest_1)
-	print("json_path = ", json_path)
-	print("Time taken: ", time.time() - start_time)
+	startTime = time.time()
+	jsonPath = mediumBot(ROWS, COLS, tuple(start_pos), testCases.coordinatesTest_1)
+	print("jsonPath = ", jsonPath)
+	print("Time taken: ", time.time() - startTime)
 
 def chooseCoordinates():
 	print("Choose what Test Case you want to use")
@@ -153,13 +151,13 @@ def chooseCoordinates():
 	coordinates = input("Enter your choice: ")
 
 	if coordinates == '1':
-		return coordinateTests.coordinatesTest_1
+		return testCases.coordinatesTest_1
 	elif coordinates == '2':
-		return coordinateTests.coordinatesTest_2
+		return testCases.coordinatesTest_2
 	elif coordinates == '3':
-		return coordinateTests.coordinatesTest_3
+		return testCases.coordinatesTest_3
 	elif coordinates == '4':
-		return coordinateTests.coordinatesTest_4
+		return testCases.coordinatesTest_4
 	else:
 		return None
 
