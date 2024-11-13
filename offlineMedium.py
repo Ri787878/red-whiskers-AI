@@ -45,6 +45,7 @@ def create_map_from_coordinates(coordinates, shape):
     return map_matrix
 
 # Set up the game map, start position, and obstacles
+"""
 coordinates1 = [
     ((5, 10), -1), ((12, 45), -1), ((20, 30), -1), ((25, 60), -1),
     ((33, 15), -1), ((40, 65), -1), ((45, 25), -1), ((52, 50), -1),
@@ -103,10 +104,27 @@ coordinates1 = [
     ((65, 27), -1), ((69, 50), -1), ((74, 12), -1), ((79, 29), -1),
     ((85, 52), -1), ((88, 38), -1), ((91, 12), -1), ((96, 18), -1),
 ]
+"""
+coordinates1 = [
+    ((70, COLS), -1) for COLS in range(0, 68)
+] + [
+    ((60, COLS), -1) for COLS in range(2, 70)
+] + [
+    ((50, COLS), -1) for COLS in range(0, 68)
+] + [
+    ((40, COLS), -1) for COLS in range(2, 70)
+] + [
+    ((30, COLS), -1) for COLS in range(0, 68)
+] + [
+    ((20, COLS), -1) for COLS in range(2, 70)
+] + [
+    ((10, COLS), -1) for COLS in range(0, 68)
+]
+
 
 shape = (100, 70)
 gameMap = create_map_from_coordinates(coordinates1, shape)
-start_pos = (99, 20)
+start_pos = (99,63)
 
 # Define function for cost-based color
 
@@ -131,7 +149,6 @@ def draw_grid(path=None, visited=None):
 def draw_path(path):
     for (px, py) in path:
         draw_grid(path=path)
-        pygame.time.delay(0)
         pygame.display.flip()
 
 # Define normalized moves for final path visualization

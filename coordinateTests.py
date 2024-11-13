@@ -1,32 +1,22 @@
-# Import necessary libraries
-import numpy as np
-from collections import deque
-import time
 
-start_time = time.time()
-#changes the Map Size
-ROWS = 100
-COLS = 70
 
-# Define moves and directions
-moves = {
-    "up": (-1, 0),
-    "down": (1, 0),
-    "left": (0, -1),
-    "right": (0, 1)
-}
+coordinatesTest_1 = [
+    ((70, COLS), -1) for COLS in range(0, 68)
+] + [
+    ((60, COLS), -1) for COLS in range(2, 70)
+] + [
+    ((50, COLS), -1) for COLS in range(0, 68)
+] + [
+    ((40, COLS), -1) for COLS in range(2, 70)
+] + [
+    ((30, COLS), -1) for COLS in range(0, 68)
+] + [
+    ((20, COLS), -1) for COLS in range(2, 70)
+] + [
+    ((10, COLS), -1) for COLS in range(0, 68)
+]
 
-# Function to create map from coordinates
-def create_map_from_coordinates(coordinates, rows, cols):
-    shape = (rows, cols)
-    map_matrix = np.zeros(shape, dtype=int)
-    for coord, value in coordinates:
-        x, y = coord
-        map_matrix[x, y] = value
-    return map_matrix
-
-# Set up the game map, start position, and obstacles
-coordinates1 = [
+coordinatesTest_2 = [
     ((5, 10), -1), ((12, 45), -1), ((20, 30), -1), ((25, 60), -1),
     ((33, 15), -1), ((40, 65), -1), ((45, 25), -1), ((52, 50), -1),
     ((55, 40), -1), ((60, 55), -1), ((65, 35), -1), ((70, 60), -1),
@@ -51,8 +41,6 @@ coordinates1 = [
     ((73, 30), -1), ((82, 40), -1), ((94, 40), -1), ((18, 30), -1),
     ((38, 45), -1), ((55, 60), -1), ((68, 45), -1), ((74, 30), -1),
     ((83, 40), -1), ((95, 40), -1), ((19, 30), -1), ((27, 45), -1),
-
-    # Additional 150 obstacles
     ((3, 13), -1), ((8, 27), -1), ((14, 50), -1), ((21, 42), -1),
     ((25, 18), -1), ((27, 22), -1), ((33, 29), -1), ((36, 43), -1),
     ((40, 19), -1), ((43, 24), -1), ((48, 62), -1), ((53, 53), -1),
@@ -84,31 +72,3 @@ coordinates1 = [
     ((65, 27), -1), ((69, 50), -1), ((74, 12), -1), ((79, 29), -1),
     ((85, 52), -1), ((88, 38), -1), ((91, 12), -1), ((96, 18), -1),
 ]
-
-start_pos = (ROWS - 1, COLS // 2)
-
-gameMap = create_map_from_coordinates(coordinates1, ROWS, COLS)
-
-bfs_path = []
-visited = set()
-queuedPositions = deque([(start_pos, [])])  # (position, path)
-visited.add(start_pos)
-
-while queuedPositions:
-    (x, y), path = queuedPositions.popleft()
-    # Check if reached the top row
-    if x == 0:
-        bfs_path = path  # store final path
-        break
-
-    # Explore neighbors
-    for move_name, (dx, dy) in moves.items():
-        nx, ny = x + dx, y + dy
-        if 0 <= nx < ROWS and 0 <= ny < COLS and gameMap[nx, ny] == 0 and (nx, ny) not in visited:
-            visited.add((nx, ny))
-            queuedPositions.append(((nx, ny), path + [move_name]))  # Store the coordinate in the path
-
-
-print("Path to top row:", bfs_path)
-print("--- %s seconds ---" % (time.time() - start_time))
-
