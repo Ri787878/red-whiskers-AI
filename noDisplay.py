@@ -120,7 +120,7 @@ def mediumBot(ROWS, COLS, start_pos,coordinates):
                 queuedPositions.append(((nx, ny), path + [move_name]))  # Store the coordinate in the path
 
     # Convert path to JSON
-    path_json = json.dumps(bfs_path)
+    path_json = json.dumps(list(bfs_path))
 
     return path_json
 
@@ -131,16 +131,17 @@ def startEasyBot(ROWS, COLS, start_pos, coordinates):
 	print("Easy Bot")
 	#startTime = time.time()
 	startTime = time.time()
-	json_path = easyBot(ROWS, COLS, start_pos, coordinates)
+	jsonPath = easyBot(ROWS, COLS, start_pos, coordinates)
 	print("jsonPath = ", jsonPath)
 	print("Time taken: ", time.time() - startTime)
 
 def startMediumBot(ROWS, COLS, start_pos, coordinates):
 	print("Medium Bot")
 	startTime = time.time()
-	jsonPath = mediumBot(ROWS, COLS, tuple(start_pos), testCases.coordinatesTest_1)
+	jsonPath = mediumBot(ROWS, COLS, tuple(start_pos), coordinates)
 	print("jsonPath = ", jsonPath)
 	print("Time taken: ", time.time() - startTime)
+	return jsonPath
 
 def chooseCoordinates():
 	print("Choose what Test Case you want to use")

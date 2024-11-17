@@ -1,4 +1,5 @@
 import noDisplay
+import testCases
 
 #Changeable Map Size
 ROWS = 100
@@ -14,7 +15,7 @@ while True:
 		noDisplay.startEasyBot(ROWS, COLS, startPos, coordinates)
 	elif choice == '2':
 		coordinates = noDisplay.chooseCoordinates()
-		noDisplay.startMediumBot(ROWS, COLS, startPos, coordinates)
+		jsonMoves = noDisplay.startMediumBot(ROWS, COLS, startPos, coordinates)
 	elif choice == '3':
 		print("Hard Bot")
 		print("UNDER CONSTRUCTION")
