@@ -15,11 +15,18 @@ moves = {
 
 # Function to create map from coordinates
 def create_map_from_coordinates(coordinates, rows, cols):
-    shape = (rows, cols)
-    map_matrix = np.zeros(shape, dtype=int)
+    map_matrix = np.zeros((rows, cols), dtype=int)
+
     for coord, value in coordinates:
         x, y = coord
-        map_matrix[x, y] = value
+        if 0 <= x < rows and 0 <= y < cols:
+            map_matrix[x, y] = -1
+        else:
+            print(f"Invalid coordinates: ({x}, {y})")
+        if value == 1 or value == 2 or value == 3:
+            map_matrix[x, y] = -1
+        else:
+            map_matrix[x, y] = value
     return map_matrix
 
 #Updates map
@@ -119,10 +126,7 @@ def mediumBot(ROWS, COLS, start_pos,coordinates):
                 visited.add((nx, ny))
                 queuedPositions.append(((nx, ny), path + [move_name]))  # Store the coordinate in the path
 
-    # Convert path to JSON
-    path_json = json.dumps(list(bfs_path))
-
-    return path_json
+    return json.dumps(list(bfs_path))
 
 
 
