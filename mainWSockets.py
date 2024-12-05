@@ -31,7 +31,7 @@ def handle_bot(data):
 
     json_data = json.loads(data)
     obstacles = json_data['data'][0]['Obstaculos']
-
+    print(json_data)
     coordinates = []
     for obstacle in obstacles:
         # Append the tuple ((x, y), type)
@@ -65,7 +65,7 @@ def response(data):
 
 # Connect to the Socket.IO server
 #Change IP to connect while we dont have a domain
-sio.connect("http://10.72.127.69:3000")
+sio.connect("http://172.20.10.2:3000")
 
 #Changeable Map Size
 ROWS = 70
