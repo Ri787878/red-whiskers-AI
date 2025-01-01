@@ -1,4 +1,6 @@
-import testCases
+import src.views.testCases as testCases
+import numpy as np
+
 def chooseCoordinates():
 	print("Choose what Test Case you want to use")
 	print("1. coordinatesTest_1")

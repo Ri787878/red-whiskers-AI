@@ -1,5 +1,4 @@
-import noDisplay
-import testCases
+import src.models.noDisplay as noDisplay
 
 #Changeable Map Size
 ROWS = 100

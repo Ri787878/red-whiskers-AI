@@ -1,4 +1,5 @@
-import noDisplay
+import src.models.noDisplay as noDisplay
+import src.models.utilities as ut
 import socketio
 sio = socketio.Client()
 
@@ -25,13 +26,13 @@ COLS = 70
 while True:
 	#Start Position
 	startPos = [ROWS - 1, 54]
-	choice = noDisplay.chooseBot()
+	choice = ut.chooseBot()
 
 	if choice == '1':
-		coordinates = noDisplay.chooseCoordinates()
+		coordinates = ut.chooseCoordinates()
 		noDisplay.startEasyBot(ROWS, COLS, startPos, coordinates)
 	elif choice == '2':
-		coordinates = noDisplay.chooseCoordinates()
+		coordinates = ut.chooseCoordinates()
 		jsonMoves =noDisplay.startMediumBot(ROWS, COLS, startPos, coordinates)
 		sio.emit('PingTest', jsonMoves)
 	elif choice == '3':

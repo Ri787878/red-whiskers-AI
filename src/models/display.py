@@ -1,6 +1,6 @@
 # Import necessary libraries
 from collections import deque
-import testCases
+import src.views.testCases as testCases
 import json
 import numpy as np
 import time
