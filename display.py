@@ -128,7 +128,7 @@ def easyBot(ROWS, COLS, CELL_SIZE, start_pos, coordinates):
 				running = False
 				pygame.quit()
 				sys.exit()
-	return moves
+	return json.dumps(list(moves))
 
 def updateMap(gameMap, botPosition, new_position):
     # Set the current bot position to 0 (aka Empty)

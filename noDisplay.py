@@ -1,5 +1,6 @@
 # Import necessary libraries
 from collections import deque
+import utilities as ut
 import testCases
 import numpy as np
 import time
@@ -13,21 +14,6 @@ moves = {
     "right": (0, 1)
 }
 
-# Function to create map from coordinates
-def create_map_from_coordinates(coordinates, rows, cols):
-    map_matrix = np.zeros((rows, cols), dtype=int)
-
-    for coord, value in coordinates:
-        x, y = coord
-        if 0 <= x < rows and 0 <= y < cols:
-            map_matrix[x, y] = -1
-        else:
-            print(f"Invalid coordinates: ({x}, {y})")
-        if value == 1 or value == 2 or value == 3:
-            map_matrix[x, y] = -1
-        else:
-            map_matrix[x, y] = value
-    return map_matrix
 
 #Updates map
 def updateMap(gameMap, botPosition, new_position):
@@ -95,17 +81,39 @@ def start(gameMap, botPosition, moves):
         moves.append("down-2-right")
         return moves
 
+# Easy Bot
+
+def startEasyBot(ROWS, COLS, start_pos, coordinates):
+	print("Easy Bot")
+	#startTime = time.time()
+	startTime = time.time()
+	jsonPath = easyBot(ROWS, COLS, start_pos, coordinates)
+	print("jsonPath = ", jsonPath)
+	print("Time taken: ", time.time() - startTime)
+
 
 def easyBot(ROWS, COLS, start_pos,coordinates):
-    gameMap = create_map_from_coordinates(coordinates, ROWS, COLS)
+    gameMap = ut.create_map_from_coordinates(coordinates, ROWS, COLS)
     moves = deque()
     while start_pos[1] != 0:
         moves = start(gameMap, start_pos, moves)
 
     return json.dumps(list(moves))
 
+
+
+# Medium Bot
+
+def startMediumBot(ROWS, COLS, start_pos, coordinates):
+	print("Medium Bot")
+	startTime = time.time()
+	jsonPath = mediumBot(ROWS, COLS, tuple(start_pos), coordinates)
+	print("jsonPath = ", jsonPath)
+	print("Time taken: ", time.time() - startTime)
+	return jsonPath
+
 def mediumBot(ROWS, COLS, start_pos,coordinates):
-    gameMap = create_map_from_coordinates(coordinates, ROWS, COLS)
+    gameMap = ut.create_map_from_coordinates(coordinates, ROWS, COLS)
 
     bfs_path = []
     visited = set()
@@ -126,50 +134,7 @@ def mediumBot(ROWS, COLS, start_pos,coordinates):
                 visited.add((nx, ny))
                 queuedPositions.append(((nx, ny), path + [move_name]))  # Store the coordinate in the path
 
-    return json.dumps(list(bfs_path))
+    # Convert path to JSON
+    path_json = json.dumps(list(bfs_path))
 
-
-
-
-def startEasyBot(ROWS, COLS, start_pos, coordinates):
-	print("Easy Bot")
-	#startTime = time.time()
-	startTime = time.time()
-	jsonPath = easyBot(ROWS, COLS, start_pos, coordinates)
-	print("jsonPath = ", jsonPath)
-	print("Time taken: ", time.time() - startTime)
-
-def startMediumBot(ROWS, COLS, start_pos, coordinates):
-	print("Medium Bot")
-	startTime = time.time()
-	jsonPath = mediumBot(ROWS, COLS, tuple(start_pos), coordinates)
-	print("jsonPath = ", jsonPath)
-	print("Time taken: ", time.time() - startTime)
-	return jsonPath
-
-def chooseCoordinates():
-	print("Choose what Test Case you want to use")
-	print("1. coordinatesTest_1")
-	print("2. coordinatesTest_2")
-	print("3. coordinatesTest_3")
-	print("4. coordinatesTest_4")
-	coordinates = input("Enter your choice: ")
-
-	if coordinates == '1':
-		return testCases.coordinatesTest_1
-	elif coordinates == '2':
-		return testCases.coordinatesTest_2
-	elif coordinates == '3':
-		return testCases.coordinatesTest_3
-	elif coordinates == '4':
-		return testCases.coordinatesTest_4
-	else:
-		return None
-
-def chooseBot():
-	print("What is the Bot you want to test?")
-	print("1. Easy Bot")
-	print("2. Medium Bot")
-	print("3. Hard Bot (UNDER CONSTRUCTION)")
-	print("4. Exit")
-	return input("Enter your choice: ")
+    return path_json
