@@ -1,18 +1,23 @@
-import src.models.botsPathfinding as BP
-import src.models.utilities as ut
+#import src.models.botsPathfinding as BP
+from models.easyBot import easyBot
+from models.mediumBot import mediumBot
+from models.hardBot import hardBot
+
+
+import models.utilities as ut
 import socketio
 sio = socketio.Client()
 
 @sio.event
 def connect():
-    print("Connected to the server.")
-    sio.emit('PingTest', 'Hello from the Python client!')
+	print("Connected to the server.")
+	sio.emit('PingTest', 'Hello from the Python client!')
 
 #"Obstacles":[{"x":0, "y":0, "tipo":1},{"x":0, "y":10, "tipo":1}]}'
 @sio.on('status')
 def response(data):
-    coordinates = tuple(data.items())
-    print("Response from the server:", data)
+	coordinates = tuple(data.items())
+	print("Response from the server:", data)
 
 # Connect to the Socket.IO server
 #Change IP to connect while we dont have a domain
@@ -33,15 +38,15 @@ while True:
 
 	if choice == '1':
 		coordinates = ut.chooseCoordinates()
-		jsonMoves = BP.easyBot()
+		jsonMoves = easyBot()
 		sio.emit('PingTest', jsonMoves)
 	elif choice == '2':
 		coordinates = ut.chooseCoordinates()
-		jsonMoves =BP.mediumBot(ROWS, COLS, startPos, coordinates)
+		jsonMoves = mediumBot(ROWS, COLS, startPos, coordinates)
 		sio.emit('PingTest', jsonMoves)
 	elif choice == '3':
 		coordinates = ut.chooseCoordinates()
-		jsonMoves =BP.hardBot(ROWS, COLS, startPos, coordinates)
+		jsonMoves =hardBot(ROWS, COLS, startPos, coordinates)
 		sio.emit('PingTest', jsonMoves)
 	elif choice == 'c':
 		break
@@ -53,7 +58,7 @@ while True:
 
 
 try:
-    sio.wait()
+	sio.wait()
 except KeyboardInterrupt:
-    print("Disconnecting...")
-    sio.disconnect()
+	print("Disconnecting...")
+	sio.disconnect()

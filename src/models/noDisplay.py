@@ -1,6 +1,6 @@
 # Import necessary libraries
 from collections import deque
-import src.models.utilities as ut
+import models.utilities as ut
 import time
 import json
 
