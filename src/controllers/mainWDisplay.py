@@ -1,4 +1,4 @@
-import src.models.display as display
+from src.models import display
 
 #Changeable Map Size
 ROWS = 100

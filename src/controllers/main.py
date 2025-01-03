@@ -1,4 +1,4 @@
-import src.models.noDisplay as noDisplay
+import src.models.botsPathfinding as BP
 import src.models.utilities as ut
 import socketio
 sio = socketio.Client()
@@ -25,19 +25,24 @@ COLS = 70
 
 while True:
 	#Start Position
+	#Change to get position from server message
 	startPos = [ROWS - 1, 54]
+	#same
 	choice = ut.chooseBot()
+	#Change so coordinates are received from server
 
 	if choice == '1':
 		coordinates = ut.chooseCoordinates()
-		noDisplay.startEasyBot(ROWS, COLS, startPos, coordinates)
+		jsonMoves = BP.easyBot()
+		sio.emit('PingTest', jsonMoves)
 	elif choice == '2':
 		coordinates = ut.chooseCoordinates()
-		jsonMoves =noDisplay.startMediumBot(ROWS, COLS, startPos, coordinates)
+		jsonMoves =BP.mediumBot(ROWS, COLS, startPos, coordinates)
 		sio.emit('PingTest', jsonMoves)
 	elif choice == '3':
-		print("Hard Bot")
-		print("UNDER CONSTRUCTION")
+		coordinates = ut.chooseCoordinates()
+		jsonMoves =BP.hardBot(ROWS, COLS, startPos, coordinates)
+		sio.emit('PingTest', jsonMoves)
 	elif choice == 'c':
 		break
 	else:
