@@ -1,16 +1,9 @@
 import heapq
 
-
-def extract_x_coordinates(coordinates):
-	# Extract the x-coordinate (first part of each tuple) from all the tuples
-	return [coord[0] for coord in coordinates]
-
-
-def hardBot(ROWS, COLS, startPos, coordinates):
+def a_star_search(ROWS, COLS, startPos, coordinates):
 	# Ensure all inputs are tuples
 	startPos = tuple(startPos)
-	obstacles = extract_x_coordinates(coordinates)
-
+	coordinates = [tuple(coord) for coord in coordinates]
 
 	def heuristic(a):
 		"""Heuristic function: Manhattan distance to row 0."""
@@ -28,6 +21,9 @@ def hardBot(ROWS, COLS, startPos, coordinates):
 	g_score = {startPos: 0}
 	f_score = {startPos: heuristic(startPos)}  # Heuristic to row 0
 	closed_set = set()
+
+	# Mark obstacles
+	obstacles = set(coordinates)
 
 	while open_list:
 		_, current = heapq.heappop(open_list)
@@ -65,32 +61,38 @@ def hardBot(ROWS, COLS, startPos, coordinates):
 
 	return None  # Return None if no path is found
 
-
-
-
-
-
+# Example usage
+ROWS = 100
+COLS = 70
+startPos = [ROWS - 1, 54]
+coordinates = [
+	((70, COLS), -1) for COLS in range(0, 68)
+] + [
+	((60, COLS), -1) for COLS in range(2, 70)
+] + [
+	((50, COLS), -1) for COLS in range(0, 68)
+] + [
+	((40, COLS), -1) for COLS in range(2, 70)
+] + [
+	((30, COLS), -1) for COLS in range(0, 68)
+] + [
+	((20, COLS), -1) for COLS in range(2, 70)
+] + [
+	((10, COLS), -1) for COLS in range(0, 68)
+]  # Example obstacles
+result = a_star_search(ROWS, COLS, startPos, coordinates)
+print(result)  # Output will be a list of moves like ['up', 'up', 'left', ...]
 
 
 """
-def hardBot(ROWS, COLS, start_pos, coordinates):
-	gameMap = create_map_from_coordinates(coordinates, ROWS, COLS)
-	return json.dumps(list(moves))
 
-#Hard Bot
-
-def heuristic(a, b):
-	return np.sqrt((b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2)
-
-
-
-def hardBot(ROWS, COLS, start_pos, coordinates):
-	dest = [0, 54]
-	a_star_search(coordinates, start_pos, dest)
-	return json.dumps(list(moves))
+['up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up',
+'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up',
+'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up',
+'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up',
+'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up',
+'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up',
+'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up',
+'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up',
+'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up', 'up']
 """
-["up", "up", "up", "up", "up", "up", "up", "up", "up", "up", "up", "up", "up", "up", "up", "up", "up", "up", "up", "up",
- "up", "up", "up", "up", "up", "up", "up", "up", "left", "left", "left", "left", "left", "left", "left", "left", "left",
- "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left",
- "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left",
- "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left"]
