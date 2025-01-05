@@ -2,8 +2,6 @@
 from models.easyBot import easyBot
 from models.mediumBot import mediumBot
 from models.hardBot import hardBot
-
-
 import models.utilities as ut
 import socketio
 sio = socketio.Client()

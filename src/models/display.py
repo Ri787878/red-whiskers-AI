@@ -31,51 +31,51 @@ DARK_GREY = (169, 169, 169)
 
 # Define moves and directions
 moves = {
-    "up": (-1, 0),
-    "down": (1, 0),
-    "left": (0, -1),
-    "right": (0, 1)
+	"up": (-1, 0),
+	"down": (1, 0),
+	"left": (0, -1),
+	"right": (0, 1)
 }
 
 # Function to create map from coordinates
 def create_map_from_coordinates(coordinates, shape):
-    map_matrix = np.zeros(shape, dtype=int)
-    for coord, value in coordinates:
-        x, y = coord
-        map_matrix[x, y] = value
-    return map_matrix
+	map_matrix = np.zeros(shape, dtype=int)
+	for coord, value in coordinates:
+		x, y = coord
+		map_matrix[x, y] = value
+	return map_matrix
 
 
 
 def draw_grid(SCREEN, gameMap, ROWS, COLS, CELL_SIZE, path=None, visited=None):
-    route = []
-    SCREEN.fill(DARK_GREY)  # Background color for the grid
-    for x in range(ROWS):
-        for y in range(COLS):
-            # Default color for cells
-            color = GREY
-            if gameMap[x, y] == -1:
-                color = RED  # Obstacles
-            elif visited and (x, y) in visited:
-                color = BLUE  # Visited cells
-            elif path and (x, y) in path:
-                color = GREEN  # Final path chosen
+	route = []
+	SCREEN.fill(DARK_GREY)  # Background color for the grid
+	for x in range(ROWS):
+		for y in range(COLS):
+			# Default color for cells
+			color = GREY
+			if gameMap[x, y] == -1:
+				color = RED  # Obstacles
+			elif visited and (x, y) in visited:
+				color = BLUE  # Visited cells
+			elif path and (x, y) in path:
+				color = GREEN  # Final path chosen
 
-            # Draw the cell with slight padding for visible grid lines
-            pygame.draw.rect(SCREEN, color, (y * CELL_SIZE, x * CELL_SIZE, CELL_SIZE - 2, CELL_SIZE - 2))
-    pygame.display.update()  # Refresh the screen with all drawn cells
+			# Draw the cell with slight padding for visible grid lines
+			pygame.draw.rect(SCREEN, color, (y * CELL_SIZE, x * CELL_SIZE, CELL_SIZE - 2, CELL_SIZE - 2))
+	pygame.display.update()  # Refresh the screen with all drawn cells
 
 def draw_path(SCREEN, gameMap, ROWS, COLS, CELL_SIZE, path):
-    for (px, py) in path:
-        draw_grid(SCREEN, gameMap, ROWS, COLS, CELL_SIZE, path=path)
-        pygame.display.flip()
+	for (px, py) in path:
+		draw_grid(SCREEN, gameMap, ROWS, COLS, CELL_SIZE, path=path)
+		pygame.display.flip()
 
 # Define normalized moves for final path visualization
 normmoves = {
-    "up": (-1, 0),
-    "down": (1, 0),
-    "left": (0, -1),
-    "right": (0, 1)
+	"up": (-1, 0),
+	"down": (1, 0),
+	"left": (0, -1),
+	"right": (0, 1)
 }
 
 ###EASY BOT
@@ -131,64 +131,64 @@ def easyBot(ROWS, COLS, CELL_SIZE, start_pos, coordinates):
 	return json.dumps(list(moves))
 
 def updateMap(gameMap, botPosition, new_position):
-    # Set the current bot position to 0 (aka Empty)
-    current_x, current_y = botPosition
-    gameMap[current_x][current_y] = 0
+	# Set the current bot position to 0 (aka Empty)
+	current_x, current_y = botPosition
+	gameMap[current_x][current_y] = 0
 
-    # Update the bot's position
-    new_x, new_y = new_position
-    gameMap[new_x][new_y] = 1  # Set the new position of the bot to 1 (aka Occupied)
+	# Update the bot's position
+	new_x, new_y = new_position
+	gameMap[new_x][new_y] = 1  # Set the new position of the bot to 1 (aka Occupied)
 
-    # Update the bot's internal position variable
-    botPosition[0] = new_x
-    botPosition[1] = new_y
-    return
+	# Update the bot's internal position variable
+	botPosition[0] = new_x
+	botPosition[1] = new_y
+	return
 
 ##Bot's movement
 #Check if the bot can move up
 def checkUp(botPosition, gameMap):
-    if botPosition[0] - 1 >= 0 and gameMap[botPosition[0] - 1][botPosition[1]] != -1:
-        return True
-    return False
+	if botPosition[0] - 1 >= 0 and gameMap[botPosition[0] - 1][botPosition[1]] != -1:
+		return True
+	return False
 #Check if the bot can move left
 def checkLeft(botPosition, gameMap):
-    if botPosition[1] - 1 >= 0 and gameMap[botPosition[0]][botPosition[1] - 1] != -1:
-        return True
-    return False
+	if botPosition[1] - 1 >= 0 and gameMap[botPosition[0]][botPosition[1] - 1] != -1:
+		return True
+	return False
 #Check if the bot can move right
 def checkRight(botPosition, gameMap):
-    if botPosition[1] + 1 < 7 and gameMap[botPosition[0]][botPosition[1] + 1] != -1:
-        return True
-    return False
+	if botPosition[1] + 1 < 7 and gameMap[botPosition[0]][botPosition[1] + 1] != -1:
+		return True
+	return False
 #Frees the bot from a cone stuck position of 1 depth
 def checkDown2Left(botPosition, gameMap):
-    if botPosition[0] + 1 < 10 and botPosition[1] - 1 >= 0 and gameMap[botPosition[0] + 1][botPosition[1] - 1] != -1:
-        return True
-    return False
+	if botPosition[0] + 1 < 10 and botPosition[1] - 1 >= 0 and gameMap[botPosition[0] + 1][botPosition[1] - 1] != -1:
+		return True
+	return False
 def checkDown2Right(botPosition, gameMap):
-    if botPosition[0] + 1 < 10 and botPosition[1] + 1 < 7 and gameMap[botPosition[0] + 1][botPosition[1] + 1] != -1:
-        return True
-    return False
+	if botPosition[0] + 1 < 10 and botPosition[1] + 1 < 7 and gameMap[botPosition[0] + 1][botPosition[1] + 1] != -1:
+		return True
+	return False
 
 def start(gameMap, start_pos, moves):
-    # Define possible moves and corresponding check functions
-    moveSet = {
-        "up": (-1, 0, checkUp),
-        "left": (0, -1, checkLeft),
-        "right": (0, 1, checkRight),
-        "down2left": (1, -1, checkDown2Left),
-        "down2right": (1, 1, checkDown2Right),
-    }
+	# Define possible moves and corresponding check functions
+	moveSet = {
+		"up": (-1, 0, checkUp),
+		"left": (0, -1, checkLeft),
+		"right": (0, 1, checkRight),
+		"down2left": (1, -1, checkDown2Left),
+		"down2right": (1, 1, checkDown2Right),
+	}
 
-    # Determine next move
-    for move_name, (dx, dy, check_func) in moveSet.items():
-        if check_func(start_pos, gameMap):  # Use the corresponding check function
-            nx, ny = start_pos[0] + dx, start_pos[1] + dy
-            if 0 <= nx < len(gameMap) and 0 <= ny < len(gameMap[0]) and gameMap[nx][ny] == 0:
-                moves.append(move_name)
-                return moves
+	# Determine next move
+	for move_name, (dx, dy, check_func) in moveSet.items():
+		if check_func(start_pos, gameMap):  # Use the corresponding check function
+			nx, ny = start_pos[0] + dx, start_pos[1] + dy
+			if 0 <= nx < len(gameMap) and 0 <= ny < len(gameMap[0]) and gameMap[nx][ny] == 0:
+				moves.append(move_name)
+				return moves
 
-    return moves
+	return moves
 
 
 ###MEDIUM BOT

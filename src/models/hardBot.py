@@ -64,33 +64,3 @@ def hardBot(ROWS, COLS, startPos, coordinates):
 					heapq.heappush(open_list, (f_score[neighbor], neighbor))
 
 	return None  # Return None if no path is found
-
-
-
-
-
-
-
-
-"""
-def hardBot(ROWS, COLS, start_pos, coordinates):
-	gameMap = create_map_from_coordinates(coordinates, ROWS, COLS)
-	return json.dumps(list(moves))
-
-#Hard Bot
-
-def heuristic(a, b):
-	return np.sqrt((b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2)
-
-
-
-def hardBot(ROWS, COLS, start_pos, coordinates):
-	dest = [0, 54]
-	a_star_search(coordinates, start_pos, dest)
-	return json.dumps(list(moves))
-"""
-["up", "up", "up", "up", "up", "up", "up", "up", "up", "up", "up", "up", "up", "up", "up", "up", "up", "up", "up", "up",
- "up", "up", "up", "up", "up", "up", "up", "up", "left", "left", "left", "left", "left", "left", "left", "left", "left",
- "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left",
- "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left",
- "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left"]
