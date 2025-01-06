@@ -9,17 +9,26 @@ sio = socketio.Client()
 @sio.event
 def connect():
 	print("Connected to the server.")
-	sio.emit('PingTest', 'Hello from the Python client!')
+	sio.IaSocket = '123456789987654321'
+	# Broadcast the value to the server
+	sio.emit('IaApiConnection', {'IaSocket': sio.IaSocket})
+	#sio.emit('PingTest', 'Hello from the Python client!')
 
 #"Obstacles":[{"x":0, "y":0, "tipo":1},{"x":0, "y":10, "tipo":1}]}'
 @sio.on('status')
-def response(data):
+def handleConnection(data):
 	coordinates = tuple(data.items())
 	print("Response from the server:", data)
 
+@sio.on("JsonMoves")
+def handleJsonMoves(data):
+	response_data = data
+	print("Response from the server:", response_data)
+
+
 # Connect to the Socket.IO server
 #Change IP to connect while we dont have a domain
-sio.connect("http://10.72.98.20:3000")
+sio.connect("http://10.36.243.29:3000")
 
 
 #Changeable Map Size
@@ -34,9 +43,14 @@ while True:
 	choice = ut.chooseBot()
 	#Change so coordinates are received from server
 
+#make function to extract info of player location, and obstacles
+#change interpret number from -1 to 1 for obstacles
+#change perception of player position from interpreting coordinates to getting it from player position
+
 	if choice == '1':
 		coordinates = ut.chooseCoordinates()
 		jsonMoves = easyBot()
+		#add token do id e do moves
 		sio.emit('PingTest', jsonMoves)
 	elif choice == '2':
 		coordinates = ut.chooseCoordinates()
