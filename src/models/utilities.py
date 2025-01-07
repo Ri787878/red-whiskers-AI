@@ -1,5 +1,4 @@
 import views.testCases as testCases
-import json
 import numpy as np
 
 def chooseCoordinates():
@@ -111,10 +110,3 @@ def checkSurroundingsAndMove(gameMap, botPosition, moves):
 		updateMap(gameMap, botPosition, (botPosition[0] + 1, botPosition[1] + 2))
 		moves.append("down-2-right")
 		return moves
-
-def getPlayerCoordinates(json_data, player_id):
-	data = json.loads(json_data)
-	for player in data["players"]:
-		if player["idPlayer"] == player_id:
-			return player["x"], player["y"]
-	return None
