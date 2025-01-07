@@ -50,7 +50,7 @@ while True:
 	#Change to get position from server message
 	startPos = [ROWS - 1, 10]
 	#same
-	choice = ut.chooseBot()
+	choice = " "
 	#Change so coordinates are received from server
 
 #make function to extract info of player location, and obstacles
