@@ -20,9 +20,18 @@ def extractObstacles(jsonData):
 	for obstacle in data["obstaculos"]:
 		x = obstacle["x"]
 		y = obstacle["y"]
-		tipo = obstacle["tipo"]
 		coordinates.append(((x, y), -1))
 	return coordinates
+
+
+def compileJson(token, coordinates, bot_id, obstacles):
+	compiled_data = {
+		"idBot": bot_id,
+		"coordinates": coordinates,
+		"token": token,
+		"obstaculos": obstacles
+	}
+	return simplejson.dumps(compiled_data)
 # Example usage
 json_message = '''
 {
@@ -59,8 +68,10 @@ token = extractToken(json_message)
 coordinates = extractBotCoordinates(json_message)
 bot_id = extractBotID(json_message)
 obstacles = extractObstacles(json_message)
+recompiledJason = compileJson(token, coordinates, bot_id, obstacles)
 
-print(f"{json_message}")
+print(f"Original Json: {json_message}")
+print(f"Recompiled JSON: {recompiledJason}")
 
 print(f"Coordinates: {coordinates}")
 print(f"Bot ID: {bot_id}")

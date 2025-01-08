@@ -131,16 +131,13 @@ def checkSurroundingsAndMove(gameMap, botPosition, moves):
 		moves.append("down-2-right")
 		return moves
 
-#ROWS EQUALLS Y (100), COLS EQUALLS X (20)
-def extractBotCoordinates(json_data):
-	data = simplejson.loads(json_data)
-	x, y = data["x"], data["y"]
-	return (x, y)
-
 def extractBotID(jsonData):
 	data = simplejson.loads(jsonData)
 	return data["idBot"]
 
+def extractBotType(jsonData):
+	data = simplejson.loads(jsonData)
+	return data["typeBot"]
 
 #Still not sure if need to create my one or use past token
 def extractToken(jsonData):
@@ -155,3 +152,18 @@ def extractObstacles(jsonData):
 		y = obstacle["y"]
 		coordinates.append(((x, y), -1))
 	return coordinates
+
+#ROWS EQUALLS Y (100), COLS EQUALLS X (20)
+def extractBotCoordinates(json_data):
+	data = simplejson.loads(json_data)
+	x, y = data["x"], data["y"]
+	return (x, y)
+
+
+def compileJson(token, bot_id, moves):
+	compiled_data = {
+		"idBot": bot_id,
+		"token": token,
+		"moves": moves
+	}
+	return simplejson.dumps(compiled_data)

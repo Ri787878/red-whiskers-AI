@@ -6,6 +6,14 @@ import models.utilities as ut
 import socketio
 sio = socketio.Client()
 
+#Declaring Global Variables
+botID = 0
+botType = 0
+token = ""
+obstacles = []
+botStartingPosition = (0, 0)
+
+
 @sio.event
 def connect():
 	print("Connected to the server.")
@@ -22,9 +30,17 @@ def handleConnection(data):
 
 @sio.on("JsonMoves")
 def handleJsonMoves(data):
+	global botID
+	global botType
+	global token
+	global obstacles
+	global botStartingPosition
+
 	botID = ut.extractBotID(data)
-	startPos = ut.extractMainCoordinates(data)
-	coordinates = ut.extractCoordinates(data)
+	botType = ut.extractBotType(data)
+	token = ut.extractToken(data)
+	obstacles = ut.extractObstacles(data)
+	botStartingPosition = ut.extractBotCoordinates(data)
 
 	print("Response from the server:", data)
 
@@ -46,36 +62,22 @@ COLS = 20
 
 
 while True:
-	#Start Position
-	#Change to get position from server message
-	startPos = [ROWS - 1, 10]
-	#same
-	choice = ut.chooseBot()
-	#Change so coordinates are received from server
+	#need to add compileJson func before sending to server
+	#Change event that i send to server
 
-#make function to extract info of player location, and obstacles
-#change interpret number from -1 to 1 for obstacles
-#change perception of player position from interpreting coordinates to getting it from player position
-
-
-
-	if choice == '1':
-		coordinates = ut.chooseCoordinates()
-		jsonMoves = easyBot()
-		#add token do id e do moves
+	if botType == '1':
+		moves = easyBot()
+		jsonMoves = ut.compileJson(token, botID, moves)
 		sio.emit('PingTest', jsonMoves)
-	elif choice == '2':
-		coordinates = ut.chooseCoordinates()
-		jsonMoves = mediumBot(ROWS, COLS, startPos, coordinates)
+	elif botType == '2':
+		moves = mediumBot(ROWS, COLS, botStartingPosition, obstacles)
+		jsonMoves = ut.compileJson(token, botID, moves)
 		sio.emit('PingTest', jsonMoves)
-	elif choice == '3':
-		coordinates = ut.chooseCoordinates()
-		jsonMoves =hardBot(ROWS, COLS, startPos, coordinates)
+	elif botType == '3':
+		moves =hardBot(ROWS, COLS, botStartingPosition, obstacles)
+		jsonMoves = ut.compileJson(token, botID, moves)
 		sio.emit('PingTest', jsonMoves)
-	elif choice == 'c':
-		break
 	else:
-		print("Invalid Choice")
 		continue
 
 
