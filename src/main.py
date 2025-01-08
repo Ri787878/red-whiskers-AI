@@ -55,15 +55,9 @@ ROWS = 100
 COLS = 20
 
 
-
-
-
-
-
-
 while True:
-	#need to add compileJson func before sending to server
 	#Change event that i send to server
+	#Maybe Create a token for IA like i can make it so it is like id plus typebot plus token received from server
 
 	if botType == '1':
 		moves = easyBot()
