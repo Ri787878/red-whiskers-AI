@@ -14,16 +14,19 @@ def connect():
 	sio.emit('IaApiConnection', {'IaSocket': sio.IaSocket})
 	#sio.emit('PingTest', 'Hello from the Python client!')
 
-#"Obstacles":[{"x":0, "y":0, "tipo":1},{"x":0, "y":10, "tipo":1}]}'
 @sio.on('status')
 def handleConnection(data):
 	coordinates = tuple(data.items())
 	print("Response from the server:", data)
 
+
 @sio.on("JsonMoves")
 def handleJsonMoves(data):
-	response_data = data
-	print("Response from the server:", response_data)
+	botID = ut.extractBotID(data)
+	startPos = ut.extractMainCoordinates(data)
+	coordinates = ut.extractCoordinates(data)
+
+	print("Response from the server:", data)
 
 
 # Connect to the Socket.IO server
@@ -33,19 +36,28 @@ sio.connect("http://10.36.243.29:3000")
 
 #Changeable Map Size
 ROWS = 100
-COLS = 70
+COLS = 20
+
+
+
+
+
+
+
 
 while True:
 	#Start Position
 	#Change to get position from server message
-	startPos = [ROWS - 1, 54]
+	startPos = [ROWS - 1, 10]
 	#same
-	choice = " "
+	choice = ut.chooseBot()
 	#Change so coordinates are received from server
 
 #make function to extract info of player location, and obstacles
 #change interpret number from -1 to 1 for obstacles
 #change perception of player position from interpreting coordinates to getting it from player position
+
+
 
 	if choice == '1':
 		coordinates = ut.chooseCoordinates()
