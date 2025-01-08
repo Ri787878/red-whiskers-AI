@@ -47,7 +47,7 @@ def handleJsonMoves(data):
 
 # Connect to the Socket.IO server
 #Change IP to connect while we dont have a domain
-sio.connect("http://10.36.243.29:3000")
+sio.connect("http://127.0.0.1:3000")
 
 
 #Changeable Map Size
@@ -62,15 +62,15 @@ while True:
 	if botType == '1':
 		moves = easyBot()
 		jsonMoves = ut.compileJson(token, botID, moves)
-		sio.emit('PingTest', jsonMoves)
+		sio.emit('JsonMoves', jsonMoves)
 	elif botType == '2':
 		moves = mediumBot(ROWS, COLS, botStartingPosition, obstacles)
 		jsonMoves = ut.compileJson(token, botID, moves)
-		sio.emit('PingTest', jsonMoves)
+		sio.emit('JsonMoves', jsonMoves)
 	elif botType == '3':
 		moves =hardBot(ROWS, COLS, botStartingPosition, obstacles)
 		jsonMoves = ut.compileJson(token, botID, moves)
-		sio.emit('PingTest', jsonMoves)
+		sio.emit('JsonMoves', jsonMoves)
 	else:
 		continue
 
