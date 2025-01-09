@@ -73,10 +73,6 @@ sio.connect("http://192.168.1.77:3000")
 ROWS = 100
 COLS = 20
 
-
-
-
-
 try:
 	sio.wait()
 except KeyboardInterrupt:
