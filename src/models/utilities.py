@@ -1,6 +1,6 @@
 import views.testCases as testCases
 import numpy as np
-import simplejson
+import simplejson as json
 
 
 def chooseCoordinates():
@@ -132,38 +132,65 @@ def checkSurroundingsAndMove(gameMap, botPosition, moves):
 		return moves
 
 def extractBotID(jsonData):
-	data = simplejson.loads(jsonData)
-	return data["idBot"]
+	try:
+		return jsonData.get('content', {}).get('idBot', None)
+	except AttributeError:
+		return None
 
 def extractBotType(jsonData):
-	data = simplejson.loads(jsonData)
-	return data["typeBot"]
+	try:
+		return jsonData.get('content', {}).get('typeBot', None)
+	except AttributeError:
+		return None
 
 #Still not sure if need to create my one or use past token
 def extractToken(jsonData):
-	data = simplejson.loads(jsonData)
-	return data["token"]
+	try:
+		return jsonData.get('content', {}).get('token', None)
+	except AttributeError:
+		return None
 
 def extractObstacles(jsonData):
-	data = simplejson.loads(jsonData)
 	coordinates = []
-	for obstacle in data["obstaculos"]:
-		x = obstacle["x"]
-		y = obstacle["y"]
-		coordinates.append(((x, y), -1))
-	return coordinates
+	try:
+		for obstacle in jsonData.get('content', {}).get('obstaculos', []):
+			x = obstacle.get('x', None)
+			y = obstacle.get('y', None)
+			coordinates.append(((x, y), -1))
+		return coordinates
+	except AttributeError:
+		return None
 
 #ROWS EQUALLS Y (100), COLS EQUALLS X (20)
-def extractBotCoordinates(json_data):
-	data = simplejson.loads(json_data)
-	x, y = data["x"], data["y"]
-	return (x, y)
+def extractBotCoordinates(jsonData):
+	try:
+		x, y = jsonData.get('content', {}).get('x', None), jsonData.get('content', {}).get('y', None)
+		return (x, y)
+	except AttributeError:
+		return None
 
 
 def compileJson(token, bot_id, moves):
-	compiled_data = {
-		"idBot": bot_id,
-		"token": token,
-		"moves": moves
-	}
-	return simplejson.dumps(compiled_data)
+	try:
+
+
+		compiled_data = {
+			"idBot": bot_id,
+			"token": token,
+			"moves": moves
+		}
+		return json.dumps(compiled_data)
+	except Exception as e:
+		raise ValueError(f"Error compiling JSON: {e}")
+
+def compileJson(token, bot_id, moves):
+	try:
+		parsed_moves = json.loads(moves)
+		compiled_data = {
+			"idBot": bot_id,
+			"token": token,
+			"moves": parsed_moves
+		}
+		return json.dumps(compiled_data)
+	except Exception as e:
+		raise ValueError(f"Error compiling JSON: {e}")

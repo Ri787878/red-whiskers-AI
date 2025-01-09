@@ -24,8 +24,7 @@ def connect():
 
 @sio.on('status')
 def handleConnection(data):
-	coordinates = tuple(data.items())
-	print("Response from the server:", data)
+	print("Response  the server (status):", data)
 
 
 @sio.on("JsonMoves")
@@ -36,43 +35,44 @@ def handleJsonMoves(data):
 	global obstacles
 	global botStartingPosition
 
+
+	print("Response from the server (JasonMoves):", data)
+
 	botID = ut.extractBotID(data)
 	botType = ut.extractBotType(data)
 	token = ut.extractToken(data)
 	obstacles = ut.extractObstacles(data)
 	botStartingPosition = ut.extractBotCoordinates(data)
 
-	print("Response from the server:", data)
+	#Change event that i send to server
+	#Maybe Create a token for IA like i can make it so it is like id plus typeBot plus token received from server
 
+	if botType == 1:
+		moves = easyBot()
+		print(moves)
+
+		jsonMoves = ut.compileJson(token, botID, moves)
+		sio.emit('JsonMoves', jsonMoves)
+
+		print(jsonMoves)
+	elif botType == 2:
+		moves = mediumBot(ROWS, COLS, botStartingPosition, obstacles)
+		jsonMoves = ut.compileJson(token, botID, moves)
+		sio.emit('JsonMoves', jsonMoves)
+	elif botType == 3:
+		moves =hardBot(ROWS, COLS, botStartingPosition, obstacles)
+		jsonMoves = ut.compileJson(token, botID, moves)
+		sio.emit('JsonMoves', jsonMoves)
 
 # Connect to the Socket.IO server
 #Change IP to connect while we dont have a domain
-sio.connect("http://127.0.0.1:3000")
+sio.connect("http://192.168.1.77:3000")
 
 
 #Changeable Map Size
 ROWS = 100
 COLS = 20
 
-
-while True:
-	#Change event that i send to server
-	#Maybe Create a token for IA like i can make it so it is like id plus typebot plus token received from server
-
-	if botType == '1':
-		moves = easyBot()
-		jsonMoves = ut.compileJson(token, botID, moves)
-		sio.emit('JsonMoves', jsonMoves)
-	elif botType == '2':
-		moves = mediumBot(ROWS, COLS, botStartingPosition, obstacles)
-		jsonMoves = ut.compileJson(token, botID, moves)
-		sio.emit('JsonMoves', jsonMoves)
-	elif botType == '3':
-		moves =hardBot(ROWS, COLS, botStartingPosition, obstacles)
-		jsonMoves = ut.compileJson(token, botID, moves)
-		sio.emit('JsonMoves', jsonMoves)
-	else:
-		continue
 
 
 

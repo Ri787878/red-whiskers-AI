@@ -8,7 +8,7 @@ def easyBot():
 	moves = deque()
 	i = 0
 	while i < 80:
-		x = random.randint(0, 4)
+		x = random.randint(0, 3)
 		if x == 0:
 			moves.append("down")
 		elif x == 1:
